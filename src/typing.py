@@ -1,3 +1,6 @@
+# Stub taken from https://github.com/micropython/micropython-lib/commit/3d779b8ceab5b65b9f70accbcbb15ab3509eceb7
+# Actual type checking to be done in mypy
+
 class Any: pass
 class NoReturn: pass
 class ClassVar: pass

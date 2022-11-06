@@ -1,3 +1,7 @@
+from display import Display
 from utils import vibrate_motor
 
-vibrate_motor([50, 500, 100, 500, 50])
+d = Display()
+d.fill(1)
+
+vibrate_motor([500])  # done

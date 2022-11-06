@@ -1,0 +1,3 @@
+connect serial /dev/ttyUSB0;
+rsync -m src/ /pyboard/;
+repl ~ import reset ~;

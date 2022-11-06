@@ -102,7 +102,10 @@ edit /pyboard/main.py
 
 Useful development commands:
 
-- `cp src/*.py /pyboard/; repl ~ import reset ~`
+```bash
+./scripts/flash_micropython.sh # to re-flash micropython firmware if the MCU freezes up
+./scripts/flash_src.sh # to transfer and run new files in a single command
+```
 
 #### Restarting
 

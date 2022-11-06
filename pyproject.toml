@@ -11,6 +11,8 @@ python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
 esptool = "^4.3"
+rshell = "^0.0.31"
+mypy = "^0.982"
 
 [build-system]
 requires = ["poetry-core"]

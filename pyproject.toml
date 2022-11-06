@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "watchy"
+version = "0.1.0"
+description = "the code running on my Watchy"
+authors = ["Huey <hello@huey.xyz>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+esptool = "^4.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

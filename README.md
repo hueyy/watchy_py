@@ -61,17 +61,6 @@ There are 2 main MicroPython scripts:
 - **boot.py**: this is run immediately after the Watchy boots up and by convention contains only code initialising debuggers, REPLs, etc.
 - **main.py**: this is run immediately after `boot.py` runs and should contain your application code. You can import other dependencies in this file.
 
-### Python REPL
-
-You can get a Python REPL prompt over the serial port:
-
-```shell
-sudo apt install picocom # if you don't have it
-picocom /dev/ttyUSB0 -b115200
-```
-
-The controls are emacs-style, so use `[C-x]`, i.e. <kbd>Ctrl-A</kbd> <kbd>Ctrl-X</kbd>.
-
 ### RShell
 
 You can use [rshell](https://github.com/dhylands/rshell) to run Python scripts on the Watchy.
@@ -99,6 +88,15 @@ Or even edit a file directly on the Watchy:
 ```bash
 edit /pyboard/main.py
 ```
+
+You can get a Python REPL prompt over the serial port:
+
+```shell
+repl
+```
+
+The controls are emacs-style, so use `[C-x]`, i.e. <kbd>Ctrl-A</kbd> <kbd>Ctrl-X</kbd>.
+
 
 Useful development commands:
 

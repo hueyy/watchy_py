@@ -29,28 +29,19 @@ class Display:
             mosi=mosi,
             miso=miso,
         )
-        self.display = EPD(spi=spi, cs=cs, dc=dc, rst=reset, busy=busy)
+        self.epd = EPD(spi=spi, cs=cs, dc=dc, rst=reset, busy=busy)
         self.current_x = 0
         self.current_y = 0
-        buffer = bytearray(self.MAX_WIDTH * self.MAX_HEIGHT // 8)
-        self.buffer = framebuf.FrameBuffer(
-            buffer, self.MAX_WIDTH, self.MAX_HEIGHT, framebuf.MONO_HLSB
+        self.buffer = bytearray(self.MAX_WIDTH * self.MAX_HEIGHT // 8)
+        self.framebuf = framebuf.FrameBuffer(
+            self.buffer, self.MAX_WIDTH, self.MAX_HEIGHT, framebuf.MONO_HLSB
         )
+        self.epd.init()
+        self.epd.hw_init()
+
+    def update(self, buffer: bytearray = None):
+        self.epd.write_buffer_to_ram(self.buffer if buffer is None else buffer)
 
     def fill(self, color: int):
-        self.display.init()
-        self.display.clear_frame_memory(color)
-        self.display.display_frame()
-        self.display.hw_init()
-
-    def fill2(self, color: int):
-        self.buffer.fill(color)
-        self.display.set_frame_memory(
-            self.frame_buffer,
-            self.current_x,
-            self.current_y,
-            self.MAX_WIDTH,
-            self.MAX_HEIGHT,
-        )
-        self.display.display_frame()
-        self.display.hw_init()
+        self.framebuf.fill(color)
+        self.update()

@@ -76,7 +76,7 @@ class EPD:
         b"\x10\x18\x18\x08\x18\x18\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x13\x14\x44\x12\x00\x00\x00\x00\x00\x00"
     )
 
-    def _command(self, command, data=None):
+    def _command(self, command: int, data: bytearray = None):
         self.dc.off()
         self.cs.off()
         self.spi.write(bytearray([command]))
@@ -84,7 +84,7 @@ class EPD:
         if data is not None:
             self._data(data)
 
-    def _data(self, data):
+    def _data(self, data: bytearray):
         self.dc.on()
         self.cs.off()
         self.spi.write(data)
@@ -120,6 +120,9 @@ class EPD:
     def set_frame_memory(
         self, image, x: int, y: int, frame_width: int, frame_height: int
     ):
+        if image is None or x < 0 or frame_width < 0 or y < 0 or frame_height < 0:
+            return
+
         # x point must be the multiple of 8 or the last 3 bits will be ignored
         x = x & 0xF8
         frame_width = frame_width & 0xF8
@@ -136,7 +139,8 @@ class EPD:
 
         self.set_memory_area(x, y, x_end, y_end)
         self.set_memory_pointer(x, y)
-        self._command(WRITE_RAM, image)
+        self._command(WRITE_RAM)
+        self._data(image)
 
     # replace the frame memory with the specified color
     def clear_frame_memory(self, color: int):
@@ -149,7 +153,7 @@ class EPD:
 
     # draw the current frame memory and switch to the next memory area
     def display_frame(self):
-        self._command(DISPLAY_UPDATE_CONTROL_2, b"\xC4")
+        self._command(DISPLAY_UPDATE_CONTROL_2)  # , b"\xC4"
         self._command(MASTER_ACTIVATION)
         self._command(TERMINATE_FRAME_READ_WRITE)
         self.wait_until_idle()
@@ -161,20 +165,26 @@ class EPD:
         self._data(bytearray([(x_start >> 3) & 0xFF]))
         self._data(bytearray([(x_end >> 3) & 0xFF]))
         self._command(
-            SET_RAM_Y_ADDRESS_START_END_POSITION, ustruct.pack("<HH", y_start, y_end)
+            SET_RAM_Y_ADDRESS_START_END_POSITION  # , ustruct.pack("<HH", y_start, y_end)
         )
+        self._data(bytearray([(y_start & 0xFF)]))
+        self._data(bytearray([(y_start >> 8) & 0xFF]))
+        self._data(bytearray([(y_end & 0xFF)]))
+        self._data(bytearray([(y_end >> 8) & 0xFF]))
 
     # specify the start point for data R/W
     def set_memory_pointer(self, x, y):
         self._command(SET_RAM_X_ADDRESS_COUNTER)
         # x point must be the multiple of 8 or the last 3 bits will be ignored
         self._data(bytearray([(x >> 3) & 0xFF]))
-        self._command(SET_RAM_Y_ADDRESS_COUNTER, ustruct.pack("<H", y))
+        self._command(SET_RAM_Y_ADDRESS_COUNTER)  # ,  ustruct.pack("<H", y)
+        self._data(bytearray([y & 0xFF]))
+        self._data(bytearray([(y >> 8) & 0xFF]))
         self.wait_until_idle()
 
     # to wake call reset() or init()
     def sleep(self):
-        self._command(DEEP_SLEEP_MODE, b"\x01")  # enter deep sleep A0=1, A0=0 power on
+        self._command(DEEP_SLEEP_MODE)  # enter deep sleep , b"\x01" A0=1, A0=0 power on
         self.wait_until_idle()
 
     def hw_init(self):
@@ -211,3 +221,14 @@ class EPD:
         self._command(SET_RAM_Y_ADDRESS_COUNTER)
         self._command(0x00)
         self.wait_until_idle()
+
+    def update(self, partial=False):
+        data = bytearray([0xFF if partial else 0xF7])
+        self._command(DISPLAY_UPDATE_CONTROL_2, data)
+        self._command(MASTER_ACTIVATION)
+        self.wait_until_idle()
+
+    def write_buffer_to_ram(self, buffer: bytearray):
+        self._command(WRITE_RAM)
+        self._data(buffer)
+        self.update()

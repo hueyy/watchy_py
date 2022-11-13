@@ -34,14 +34,18 @@ class Display:
         self.current_y = 0
         self.buffer = bytearray(self.MAX_WIDTH * self.MAX_HEIGHT // 8)
         self.framebuf = framebuf.FrameBuffer(
-            self.buffer, self.MAX_WIDTH, self.MAX_HEIGHT, framebuf.MONO_HLSB
+            self.buffer, self.MAX_WIDTH, self.MAX_HEIGHT, framebuf.MONO_HMSB
         )
         self.epd.init()
         self.epd.hw_init()
 
-    def update(self, buffer: bytearray = None):
-        self.epd.write_buffer_to_ram(self.buffer if buffer is None else buffer)
+    def update(self, buffer: bytearray | None = None, partial=False):
+        target_buffer = self.buffer if buffer is None else buffer
+        self.epd.display_buffer(target_buffer, partial)
 
     def fill(self, color: int):
         self.framebuf.fill(color)
         self.update()
+
+    def sleep(self):
+        self.epd.sleep()

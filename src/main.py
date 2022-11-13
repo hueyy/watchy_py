@@ -1,8 +1,7 @@
-from display import Display
-from images import dino
+from watchy import Watchy
 from utils import vibrate_motor
+from time import sleep_ms
 
-d = Display()
-d.update(dino)
+w = Watchy()
 
 vibrate_motor([500])  # done

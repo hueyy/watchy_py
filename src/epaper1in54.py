@@ -25,9 +25,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from micropython import const
 from time import sleep_ms
+
 import ustruct
+from micropython import const
 
 # Display resolution
 EPD_WIDTH = const(200)
@@ -200,7 +201,7 @@ class EPD:
                 )
                 self.send_data(bytearray([~buffer[idx] if invert else buffer[idx]]))
 
-    def display_buffer(self, buffer: bytearray, partial=False):
+    def display_buffer(self, buffer: bytearray, mirror_y=True, partial=False):
         self.send_command(WRITE_RAM)
         self.write_buffer_to_ram(buffer, mirror_y=True)
         self.update(partial)

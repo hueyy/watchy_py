@@ -113,3 +113,8 @@ Since the reset pin on Watchy isn't easily accessible, you may want to do the fo
 cp reset.py /pyboard/
 repl ~ import reset ~
 ```
+
+### Assets
+
+- **Fonts**: [peterhinch/micropython-font-to-py](https://github.com/peterhinch/micropython-font-to-py)
+- **Images**: [image2cpp](https://javl.github.io/image2cpp/)

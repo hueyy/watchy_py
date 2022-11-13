@@ -1,6 +1,10 @@
 from epaper1in54 import EPD
 from machine import Pin, SPI
 import framebuf
+from writer import Writer
+
+# fonts
+import assets.fonts.fira_sans_regular_24 as fira_sans_regular_24
 
 
 class Display:
@@ -39,9 +43,9 @@ class Display:
         self.epd.init()
         self.epd.hw_init()
 
-    def update(self, buffer: bytearray | None = None, partial=False):
+    def update(self, buffer: bytearray | None = None, mirror_y=True, partial=False):
         target_buffer = self.buffer if buffer is None else buffer
-        self.epd.display_buffer(target_buffer, partial)
+        self.epd.display_buffer(target_buffer, mirror_y=mirror_y, partial=partial)
 
     def fill(self, color: int):
         self.framebuf.fill(color)
@@ -49,3 +53,8 @@ class Display:
 
     def sleep(self):
         self.epd.sleep()
+
+    def display_text(self):
+        self.framebuf.fill(1)
+        self.framebuf.text("Henlo World!!", 20, 20, 0)
+        self.update(mirror_y=False)

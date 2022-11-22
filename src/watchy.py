@@ -31,6 +31,7 @@ class Watchy:
         self.init_interrupts()
         # self.init_buttons()
         self.handle_wakeup()
+        self.display.test()
         # if not DEBUG:
         #     machine.deepsleep()
 
@@ -63,7 +64,6 @@ class Watchy:
         )
 
     def handle_wakeup(self):
-        # self.display.display_text()
         reason = machine.wake_reason()
         if reason is machine.EXT0_WAKE:
             print("RTC wake")

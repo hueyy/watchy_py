@@ -2,6 +2,7 @@ from epaper1in54 import EPD
 from machine import Pin, SPI
 import framebuf
 from writer import Writer
+from constants import BLACK, WHITE
 
 # fonts
 import assets.fonts.fira_sans_regular_24 as fira_sans_regular_24
@@ -38,7 +39,10 @@ class Display:
         self.current_y = 0
         self.buffer = bytearray(self.MAX_WIDTH * self.MAX_HEIGHT // 8)
         self.framebuf = framebuf.FrameBuffer(
-            self.buffer, self.MAX_WIDTH, self.MAX_HEIGHT, framebuf.MONO_HMSB
+            self.buffer,
+            self.MAX_WIDTH,
+            self.MAX_HEIGHT,
+            framebuf.MONO_HLSB,
         )
         self.epd.init()
         self.epd.hw_init()
@@ -54,7 +58,29 @@ class Display:
     def sleep(self):
         self.epd.sleep()
 
-    def display_text(self):
-        self.framebuf.fill(1)
-        self.framebuf.text("Henlo World!!", 20, 20, 0)
-        self.update(mirror_y=False)
+    def display_text(
+        self,
+        text: str,
+        x: int,
+        y: int,
+        font,
+        background_colour: int,
+        text_colour: int,
+    ):
+        self.wri = Writer(
+            self.framebuf,
+            font,
+            self.MAX_WIDTH,
+            self.MAX_HEIGHT,
+            background_colour,
+            text_colour,
+        )
+        self.wri.set_textpos(self.framebuf, x, y)
+        self.wri.printstring(text)
+
+    def test(self):
+        self.framebuf.fill(WHITE)
+        self.display_text(
+            "Go go power rangers", 10, 10, fira_sans_regular_24, WHITE, BLACK
+        )
+        self.update()

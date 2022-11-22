@@ -1,5 +1,8 @@
 from micropython import const
 
+WHITE = 1
+BLACK = 0
+
 MENU_PIN = const(26)
 BACK_PIN = const(25)
 UP_PIN = const(32)

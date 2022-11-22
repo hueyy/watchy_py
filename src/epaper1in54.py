@@ -25,7 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from time import sleep_ms
+from time import sleep_ms  # type: ignore
 
 import ustruct
 from micropython import const
@@ -191,7 +191,6 @@ class EPD:
         dy: int = y1 - y
         w1 -= dx
         h1 -= dy
-        new_buffer = []
         for i in range(h1):
             for j in range(w1 // 8):
                 idx: int = (

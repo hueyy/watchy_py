@@ -49,7 +49,8 @@ def _get_id(device):
 # Basic Writer class for monochrome displays
 class Writer:
 
-    state = {}  # Holds a display state for each device
+    # Holds a display state for each device
+    state = {}  # type: ignore
 
     def set_textpos(self, device, row=None, col=None):
         devid = _get_id(device)

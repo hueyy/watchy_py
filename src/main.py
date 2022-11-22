@@ -1,7 +1,13 @@
 from watchy import Watchy
 from utils import vibrate_motor
-from time import sleep_ms
+import uasyncio as asyncio
 
-w = Watchy()
 
-vibrate_motor([500])  # done
+# vibrate_motor([500])  # done
+
+
+async def main():
+    w = Watchy()
+
+
+asyncio.run(main())

@@ -4,7 +4,12 @@
 
 The following steps are applicable only to development on Linux.
 
-### Installing Poetry dependencies
+1. [Installing Poetry dependencies](#install-poetry-dependencies)
+2. [Install MicroPython firmware](#install-micropython-firmware)
+3. Understand the [file structure](#file-structure)
+4. Use either [WebREPL](#webrepl) or [RShell](#rshell)
+
+### Install Poetry dependencies
 
 This project uses the Poetry dependency manager. Install that and run the following to install the poetry dependencies:
 
@@ -12,7 +17,7 @@ This project uses the Poetry dependency manager. Install that and run the follow
 poetry install
 ```
 
-### Installing MicroPython firmware
+### Install MicroPython firmware
 
 Enter the virtualenv created by Poetry:
 
@@ -56,10 +61,19 @@ esptool.py --chip esp32 --port /dev/ttyUSB0 write_flash -z 0x1000 ~/Downloads/es
 
 ### File structure
 
+
 There are 2 main MicroPython scripts:
 
 - **boot.py**: this is run immediately after the Watchy boots up and by convention contains only code initialising debuggers, REPLs, etc.
 - **main.py**: this is run immediately after `boot.py` runs and should contain your application code. You can import other dependencies in this file.
+
+### WebREPL
+
+You can use MicroPython's [webrepl](https://github.com/micropython/webrepl) to develop wirelessly over WiFi.
+
+Install [RShell](#rshell) and run the RShell development scripts to install the MicroPython firmware and transfer the files from this repository onto the board.
+
+Rename `src/secrets.example.py` to `src/secrets.py` and fill in the secrets appropriately.
 
 ### RShell
 

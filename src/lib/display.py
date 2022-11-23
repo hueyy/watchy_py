@@ -67,7 +67,7 @@ class Display:
         background_colour: int,
         text_colour: int,
     ):
-        self.wri = Writer(
+        wri = Writer(
             self.framebuf,
             font,
             self.MAX_WIDTH,
@@ -75,12 +75,5 @@ class Display:
             background_colour,
             text_colour,
         )
-        self.wri.set_textpos(self.framebuf, x, y)
-        self.wri.printstring(text)
-
-    def test(self):
-        self.framebuf.fill(WHITE)
-        self.display_text(
-            "Go go power rangers", 10, 10, fira_sans_regular_24, WHITE, BLACK
-        )
-        self.update()
+        wri.set_textpos(self.framebuf, y, x)
+        wri.printstring(text)

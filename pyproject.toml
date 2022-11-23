@@ -14,6 +14,7 @@ freetype-py = "^2.3.0"
 esptool = "^4.3"
 rshell = "^0.0.31"
 mypy = "^0.982"
+black = "^22.10.0"
 
 [build-system]
 requires = ["poetry-core"]

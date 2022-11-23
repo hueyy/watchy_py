@@ -1,5 +1,7 @@
 # Watchy
 
+<img src="./assets/watchy_prose.jpg" width="300" />
+
 ## Development
 
 The following steps are applicable only to development on Linux.

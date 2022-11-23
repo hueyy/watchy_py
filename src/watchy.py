@@ -5,6 +5,13 @@ import esp32
 import machine
 import micropython
 import time
+from utils import (
+    hour_to_string,
+    number_teen_to_string,
+    number_tens_to_string,
+    month_to_short_string,
+    week_day_to_short_string,
+)
 from constants import (
     MENU_PIN,
     BACK_PIN,
@@ -14,17 +21,23 @@ from constants import (
     RTC_SCL_PIN,
     RTC_INT_PIN,
     BATT_ADC_PIN,
+    WHITE,
+    BLACK,
 )
 
+import assets.fonts.fira_sans_bold_58 as fira_sans_bold_58
+import assets.fonts.fira_sans_regular_38 as fira_sans_regular_38
+import assets.fonts.fira_sans_regular_28 as fira_sans_regular_28
 
-DEBUG = True
+
+DEBUG = False
 
 
 class Watchy:
     def __init__(self):
-        self.wdt = WDT(timeout=10000)
+        self.wdt = WDT(timeout=30000)
         self.wdt_timer = Timer(0)
-        self.wdt_timer.init(mode=Timer.PERIODIC, period=9000, callback=self.feed_wdt)
+        self.wdt_timer.init(mode=Timer.PERIODIC, period=10000, callback=self.feed_wdt)
 
         self.display = Display()
         i2c = SoftI2C(sda=Pin(RTC_SDA_PIN), scl=Pin(RTC_SCL_PIN))
@@ -35,9 +48,8 @@ class Watchy:
         self.init_interrupts()
         # self.init_buttons()
         self.handle_wakeup()
-        self.display.test()
-        # if not DEBUG:
-        #     machine.deepsleep()
+        if not DEBUG:
+            machine.deepsleep()
 
     def init_interrupts(self):
         esp32.wake_on_ext0(Pin(RTC_INT_PIN, Pin.IN), esp32.WAKEUP_ALL_LOW)
@@ -69,9 +81,9 @@ class Watchy:
 
     def handle_wakeup(self):
         reason = machine.wake_reason()
-        if reason is machine.EXT0_WAKE:
+        if reason is machine.EXT0_WAKE or reason == 0:
             print("RTC wake")
-            print(self.rtc.datetime())
+            self.display_prose_watchface()
         elif reason is machine.EXT1_WAKE:
             print("PIN wake")
             p = Pin(MENU_PIN, Pin.IN)
@@ -83,6 +95,41 @@ class Watchy:
     def handle_pin_wakeup(self, pin: Pin):
         print("handle_pin_wakeup")
         print(pin)
+
+    def display_prose_watchface(self):
+        self.display.framebuf.fill(WHITE)
+        datetime = self.rtc.datetime()
+        (_, month, day, week_day, hours, minutes, _, _) = datetime
+        self.display.display_text(
+            hour_to_string(hours), 10, 15, fira_sans_bold_58, WHITE, BLACK
+        )
+
+        display_minutes_1 = lambda text: self.display.display_text(
+            text, 10, 80, fira_sans_regular_38, WHITE, BLACK
+        )
+        if minutes == 0:
+            display_minutes_1("o'clock")
+        elif minutes < 20:
+            display_minutes_1(
+                "oh " if minutes < 10 else "" + number_teen_to_string(minutes)
+            )
+        else:
+            minutes_tens_str, minutes_ones_str = number_tens_to_string(minutes)
+            display_minutes_1(minutes_tens_str)
+            self.display.display_text(
+                minutes_ones_str, 10, 115, fira_sans_regular_38, WHITE, BLACK
+            )
+        week_day_str = week_day_to_short_string(week_day)
+        month_str = month_to_short_string(month)
+        self.display.display_text(
+            f"{week_day_str}, {day} {month_str}",
+            10,
+            160,
+            fira_sans_regular_28,
+            WHITE,
+            BLACK,
+        )
+        self.display.update()
 
     def get_battery_voltage(self) -> float:
         return self.adc.read_uv() / 1000 * 2

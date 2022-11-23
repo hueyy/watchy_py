@@ -131,4 +131,5 @@ repl ~ import reset ~
 ### Assets
 
 - **Fonts**: [peterhinch/micropython-font-to-py](https://github.com/peterhinch/micropython-font-to-py)
+  - `./scripts/font-to-py.py -x input.ttf <font_size> out.py`
 - **Images**: [image2cpp](https://javl.github.io/image2cpp/)

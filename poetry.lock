@@ -70,6 +70,14 @@ reedsolo = ">=1.5.3,<=1.5.4"
 dev = ["black", "coverage (>=6.0,<7.0)", "flake8 (>=3.2.0)", "flake8-import-order", "pre-commit", "pyelftools", "unittest-xml-reporting"]
 
 [[package]]
+name = "freetype-py"
+version = "2.3.0"
+description = "Freetype python bindings"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "mypy"
 version = "0.982"
 description = "Optional static typing for Python"
@@ -178,7 +186,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "aa280cb6358537f3d4ea3ef042db85e48f0506879e2b41f765afe0690d24195f"
+content-hash = "821ba093cb962e9499c687097cce75032f13fa89302bcdd078d9323536d7acc5"
 
 [metadata.files]
 bitstring = [
@@ -285,6 +293,15 @@ ecdsa = [
 ]
 esptool = [
     {file = "esptool-4.3.tar.gz", hash = "sha256:03d00312eef258baf83faefd0b912b2251dd0440242da9dcb1b18fe75ed614c3"},
+]
+freetype-py = [
+    {file = "freetype-py-2.3.0.zip", hash = "sha256:f9b64ce3272a5c358dcee824800a32d70997fb872a0965a557adca20fce7a5d0"},
+    {file = "freetype_py-2.3.0-py3-none-macosx_10_9_universal2.whl", hash = "sha256:ca7155de937af6f26bfd9f9089a6e9b01fa8f9d3040a3ddc0aeb3a53cf88f428"},
+    {file = "freetype_py-2.3.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ccdb1616794a8ad48beaa9e29d3494e6643d24d8e925cc39263de21c062ea5a7"},
+    {file = "freetype_py-2.3.0-py3-none-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:c8f17c3ac35dc7cc9571ac37a00a6daa428a1a6d0fe6926a77d16066865ed5ef"},
+    {file = "freetype_py-2.3.0-py3-none-musllinux_1_1_aarch64.whl", hash = "sha256:89cee8f4e7cf0a37b73a43a08c88703d84e3b9f9243fc665d8dc0b72a5d206a8"},
+    {file = "freetype_py-2.3.0-py3-none-musllinux_1_1_x86_64.whl", hash = "sha256:b95ccd52ff7e9bef34505f8af724cee114a3c3cc9cf13e0fd406fa0cc92b988a"},
+    {file = "freetype_py-2.3.0-py3-none-win_amd64.whl", hash = "sha256:3a552265b06c2cb3fa54f86ed6fcbf045d8dc8176f9475bedddf9a1b31f5402f"},
 ]
 mypy = [
     {file = "mypy-0.982-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:5085e6f442003fa915aeb0a46d4da58128da69325d8213b4b35cc7054090aed5"},

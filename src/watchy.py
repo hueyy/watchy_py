@@ -1,10 +1,10 @@
-from display import Display
+from lib.display import Display
+from lib.ds3231 import DS3231
+from machine import Pin, SoftI2C, ADC, WDT, Timer
+import esp32
 import machine
-from machine import Pin, SoftI2C, ADC
-from ds3231 import DS3231
 import micropython
 import time
-import esp32
 from constants import (
     MENU_PIN,
     BACK_PIN,
@@ -22,6 +22,10 @@ DEBUG = True
 
 class Watchy:
     def __init__(self):
+        self.wdt = WDT(timeout=10000)
+        self.wdt_timer = Timer(0)
+        self.wdt_timer.init(mode=Timer.PERIODIC, period=9000, callback=self.feed_wdt)
+
         self.display = Display()
         i2c = SoftI2C(sda=Pin(RTC_SDA_PIN), scl=Pin(RTC_SCL_PIN))
         self.rtc = DS3231(i2c)
@@ -82,3 +86,7 @@ class Watchy:
 
     def get_battery_voltage(self) -> float:
         return self.adc.read_uv() / 1000 * 2
+
+    def feed_wdt(self, timer):
+        # TODO: verify that everything is functioning correctly
+        self.wdt.feed()

@@ -1,8 +1,8 @@
-from epaper1in54 import EPD
+from constants import BLACK, WHITE
+from lib.epaper1in54 import EPD
+from lib.writer import Writer
 from machine import Pin, SPI
 import framebuf
-from writer import Writer
-from constants import BLACK, WHITE
 
 # fonts
 import assets.fonts.fira_sans_regular_24 as fira_sans_regular_24
